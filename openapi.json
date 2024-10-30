@@ -1,0 +1,207 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Professor API",
+    "version": "1.0.0",
+    "description": "An API for managing professors in a university system."
+  },
+  "paths": {
+    "/Professor/search/{P_UNI}": {
+      "get": {
+        "summary": "Retrieve a professor by P_UNI",
+        "parameters": [
+          {
+            "name": "P_UNI",
+            "in": "path",
+            "required": true,
+            "description": "The university ID of the professor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A professor object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Professor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Professor not found"
+          }
+        }
+      }
+    },
+    "/Professor/insert/{first_name}&{last_name}": {
+      "post": {
+        "summary": "Insert a new professor",
+        "parameters": [
+          {
+            "name": "first_name",
+            "in": "path",
+            "required": true,
+            "description": "The first name of the professor",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_name",
+            "in": "path",
+            "required": true,
+            "description": "The last name of the professor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Professor created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Professor"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/Professor/update/firstname/{p_uni}&{new_first_name}": {
+      "patch": {
+        "summary": "Update the first name of a professor",
+        "parameters": [
+          {
+            "name": "p_uni",
+            "in": "path",
+            "required": true,
+            "description": "The university ID of the professor",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "new_first_name",
+            "in": "path",
+            "required": true,
+            "description": "The new first name of the professor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Professor first name updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Professor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Professor not found"
+          }
+        }
+      }
+    },
+    "/Professor/update/lastname/{p_uni}&{new_last_name}": {
+      "patch": {
+        "summary": "Update the last name of a professor",
+        "parameters": [
+          {
+            "name": "p_uni",
+            "in": "path",
+            "required": true,
+            "description": "The university ID of the professor",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "new_last_name",
+            "in": "path",
+            "required": true,
+            "description": "The new last name of the professor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Professor last name updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Professor"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Professor not found"
+          }
+        }
+      }
+    },
+    "/Professor/delete/{p_uni}": {
+      "delete": {
+        "summary": "Delete a professor",
+        "parameters": [
+          {
+            "name": "p_uni",
+            "in": "path",
+            "required": true,
+            "description": "The university ID of the professor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Professor deleted successfully"
+          },
+          "404": {
+            "description": "Professor not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Professor": {
+        "type": "object",
+        "properties": {
+          "p_uni": {
+            "type": "string",
+            "description": "The university ID of the professor"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the professor"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the professor"
+          }
+        },
+        "required": ["p_uni", "first_name", "last_name"]
+      }
+    }
+  }
+}
