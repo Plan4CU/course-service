@@ -12,7 +12,7 @@ class CourseSection(BaseModel):
     p_uni: Optional[str] = None
     created_at: Optional[str] = None
     course_code: Optional[str] = None
-    sis_course_id: Optional[str] = None
+    course_id: Optional[str] = None
     course_no: Optional[str] = None
     section: Optional[str] = None
     course_year: Optional[str] = None
