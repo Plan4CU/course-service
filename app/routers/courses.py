@@ -31,4 +31,8 @@ async def update_course_name(course_id: str, new_course_name: str) -> CourseSect
 async def delete_course(course_id: str) -> bool:
     db_wrapper= ServiceFactory.get_service("ProfessorResource")
     if db_wrapper.get_by_key(course_id) == None:
-        raise HTTPException(status_code=status.HTTP_40
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Course {course_id} not found")
+        return None
+    else:
+        result = db_wrapper.delete_by_key(course_id)
+        return result
