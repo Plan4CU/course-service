@@ -31,42 +31,4 @@ class CourseResource(BaseResource):
 
         result = CourseSection(**result)
         return result
-    
-    def insert_by_fields(self, course_name: str) -> CourseSection:
-        
-        d_service = self.data_service
-        
-        # insert the data into the SQL DB 
-        result = d_service.insert_data_object(
-            self.database, self.collection, course_name
-        )
-        
-        # cast the data returned into a professor object 
-        result = CourseSection(**result)
-        return result
-    
-    def update_by_fields(self, course_id: str) -> CourseSection:
-        
-        d_service = self.data_service
-        
-        # insert the data into the SQL DB 
-        result = d_service.update_data_object(
-            self.database, self.collection, course_id
-        )
-        
-        # cast the data returned into a professor object 
-        result = CourseSection(**result)
-        return result
-    
-    def delete_by_key(self, course_id:str) -> bool:
-        
-        d_service = self.data_service
-        
-        # insert the data into the SQL DB 
-        result = d_service.delete_data_object(
-            self.database, self.collection, course_id
-        )
-        
-        return result
-
-
+  
