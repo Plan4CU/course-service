@@ -1,20 +1,20 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Professor API",
+    "title": "Courses API",
     "version": "1.0.0",
-    "description": "An API for managing professors in a university system."
+    "description": "API for managing courses"
   },
   "paths": {
-    "/Professor/search/{P_UNI}": {
+    "/courses/{course_id}": {
       "get": {
-        "summary": "Retrieve a professor by P_UNI",
+        "summary": "Get a course by course_id",
+        "operationId": "getCourse",
         "parameters": [
           {
-            "name": "P_UNI",
+            "name": "course_id",
             "in": "path",
             "required": true,
-            "description": "The university ID of the professor",
             "schema": {
               "type": "string"
             }
@@ -22,150 +22,67 @@
         ],
         "responses": {
           "200": {
-            "description": "A professor object",
+            "description": "Course found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Professor"
+                  "$ref": "#/components/schemas/Course"
                 }
               }
             }
           },
           "404": {
-            "description": "Professor not found"
+            "description": "Course not found"
           }
         }
-      }
-    },
-    "/Professor/insert/{first_name}&{last_name}": {
-      "post": {
-        "summary": "Insert a new professor",
-        "parameters": [
-          {
-            "name": "first_name",
-            "in": "path",
-            "required": true,
-            "description": "The first name of the professor",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "last_name",
-            "in": "path",
-            "required": true,
-            "description": "The last name of the professor",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Professor created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Professor"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
-    },
-    "/Professor/update/firstname/{p_uni}&{new_first_name}": {
+      },
       "patch": {
-        "summary": "Update the first name of a professor",
+        "summary": "Update a course by course_id",
+        "operationId": "updateCourse",
         "parameters": [
           {
-            "name": "p_uni",
+            "name": "course_id",
             "in": "path",
             "required": true,
-            "description": "The university ID of the professor",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "new_first_name",
-            "in": "path",
-            "required": true,
-            "description": "The new first name of the professor",
             "schema": {
               "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Course"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Professor first name updated successfully",
+            "description": "Course updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Professor"
+                  "$ref": "#/components/schemas/Course"
                 }
               }
             }
           },
           "404": {
-            "description": "Professor not found"
+            "description": "Course not found"
           }
         }
-      }
-    },
-    "/Professor/update/lastname/{p_uni}&{new_last_name}": {
-      "patch": {
-        "summary": "Update the last name of a professor",
-        "parameters": [
-          {
-            "name": "p_uni",
-            "in": "path",
-            "required": true,
-            "description": "The university ID of the professor",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "new_last_name",
-            "in": "path",
-            "required": true,
-            "description": "The new last name of the professor",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Professor last name updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Professor"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Professor not found"
-          }
-        }
-      }
-    },
-    "/Professor/delete/{p_uni}": {
+      },
       "delete": {
-        "summary": "Delete a professor",
+        "summary": "Delete a course by course_id",
+        "operationId": "deleteCourse",
         "parameters": [
           {
-            "name": "p_uni",
+            "name": "course_id",
             "in": "path",
             "required": true,
-            "description": "The university ID of the professor",
             "schema": {
               "type": "string"
             }
@@ -173,10 +90,99 @@
         ],
         "responses": {
           "204": {
-            "description": "Professor deleted successfully"
+            "description": "Course deleted"
           },
           "404": {
-            "description": "Professor not found"
+            "description": "Course not found"
+          }
+        }
+      }
+    },
+    "/courses": {
+      "get": {
+        "summary": "Get all courses",
+        "operationId": "getAllCourses",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "professor_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of courses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Course"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new course",
+        "operationId": "createCourse",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Course"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Course created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Course"
+                }
+              }
+            }
           }
         }
       }
@@ -184,23 +190,64 @@
   },
   "components": {
     "schemas": {
-      "Professor": {
+      "Course": {
         "type": "object",
         "properties": {
-          "p_uni": {
-            "type": "string",
-            "description": "The university ID of the professor"
+          "course_id": {
+            "type": "string"
           },
-          "first_name": {
-            "type": "string",
-            "description": "The first name of the professor"
+          "course_name": {
+            "type": "string"
           },
-          "last_name": {
-            "type": "string",
-            "description": "The last name of the professor"
+          "call_num": {
+            "type": "integer"
+          },
+          "professor": {
+            "type": "string"
+          },
+          "credits": {
+            "type": "integer"
+          },
+          "is_prereq": {
+            "type": "boolean"
+          },
+          "has_prereq": {
+            "type": "boolean"
+          },
+          "is_core": {
+            "type": "boolean"
+          },
+          "semester": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
           }
         },
-        "required": ["p_uni", "first_name", "last_name"]
+        "required": [
+          "course_id",
+          "course_name",
+          "call_num",
+          "professor",
+          "credits",
+          "is_prereq",
+          "has_prereq",
+          "is_core",
+          "semester",
+          "year"
+        ],
+        "example": {
+          "course_id": "COMS4153W",
+          "course_name": "Cloud Computing",
+          "call_num": 12345,
+          "professor": "dff9",
+          "credits": 3,
+          "is_prereq": false,
+          "has_prereq": true,
+          "is_core": false,
+          "semester": "FA",
+          "year": 2024
+        }
       }
     }
   }
