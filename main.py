@@ -4,7 +4,7 @@ import uvicorn
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware import Middleware
-from app.routers import courses_router
+from app.routers import course_router
 from app.middleware.logging_middleware import LoggingMiddleware
 
 where_am_i = os.environ.get("WHEREAMI", None)
