@@ -1,44 +1,62 @@
-# Course Microservice
+# Course Service API
 
-This repository provides access to course information stored in a dedicated MySQL database. The Course microservice allows for handling data related to courses, specifically supporting basic CRUD operations for adding, viewing, updating, and deleting course records. Initially, each course entry includes fields like Course ID, Title, Description, and Instructor. Future sprints may expand this data model to include additional details such as credits, schedule, and prerequisites.
-
-## Overview
-
-We use **FastAPI** as the route handling framework and **MySQL** for the course database. The DB wrapper to connect and query the MySQL database from Python can be found in the `MySQLCourseDataService.py` file. An OpenAPI specification is available once the application is launched, accessible via the `/docs` endpoint.
-
-To launch the microservice, use the command `uvicorn main:app --reload`. The `--reload` flag restarts the server automatically when file changes are detected, which is helpful for development.
-
-## Installation
-
-For local testing, **DataGrip** or any SQL client can be helpful for setting up and visualizing database tables and data. **VS Code** is recommended for developing this microservice.
-
-## Running the Application
-
-1. **Set up a virtual environment**:
-   - Create the virtual environment: `python -m venv venv`
-   - Activate the environment:
-     - On macOS/Linux: `source venv/bin/activate`
-     - On Windows: `.\venv\Scripts\activate`
-
-2. **Install dependencies**:
-   - Run `pip install -r requirements.txt` to install all necessary Python libraries.
-
-3. **Set Environment Variables**:
-   - Populate the following environment variables to configure the database:
-     - `DB_USER`: Username for MySQL
-     - `DB_PASSWORD`: Password for MySQL
-     - `DB_HOST`: Database host URL (use `localhost` for local development)
-     - `DB_PORT`: Port number for MySQL, typically `3306`
-
-4. **Run the Application**:
-   - Start the FastAPI application with: `uvicorn main:app --reload`
+This API provides endpoints for managing courses and sections in an educational institution.
 
 ## API Endpoints
 
-- **GET /courses**: Retrieve a list of all courses.
-- **GET /courses/{id}**: Retrieve details for a specific course by ID.
-- **POST /courses**: Add a new course to the database.
-- **PUT /courses/{id}**: Update information for a specific course by ID.
-- **DELETE /courses/{id}**: Delete a course from the database by ID.
+### Courses
 
-Visit the `/docs` endpoint once the application is running to view the full OpenAPI documentation and try out the endpoints interactively.
+- `GET /courses`: Retrieve a list of all courses
+- `GET /courses/{course_id}`: Retrieve details of a specific course
+- `POST /courses`: Create a new course
+- `PUT /courses/{course_id}`: Update an existing course
+- `DELETE /courses/{course_id}`: Delete a course
+
+### Sections
+
+- `GET /sections`: Retrieve a list of all sections
+- `GET /sections/{section_id}`: Retrieve details of a specific section
+- `GET /courses/{course_id}/sections`: Retrieve all sections for a specific course
+- `POST /sections`: Create a new section
+- `PUT /sections/{section_id}`: Update an existing section
+- `DELETE /sections/{section_id}`: Delete a section
+
+### GraphQL
+
+- `POST /graphql`: GraphQL endpoint for querying courses and sections
+
+## REST API Best Practices
+
+This API follows these REST API best practices:
+
+1. Use HTTP methods appropriately:
+    - GET for retrieving resources
+    - POST for creating new resources
+    - PUT for updating existing resources
+    - DELETE for removing resources
+
+2. Use plural nouns for resource names (e.g., /courses, /sections)
+
+3. Use nested resources for showing relationships (e.g., /courses/{course_id}/sections)
+
+4. Implement pagination for list endpoints to manage large datasets
+
+5. Use HATEOAS (Hypermedia as the Engine of Application State) to make the API self-discoverable
+
+6. Provide meaningful HTTP status codes (200 for success, 201 for creation, 204 for deletion, 400 for bad requests, 404 for not found, etc.)
+
+7. Version the API (currently v1.0.0)
+
+8. Use JSON for request and response bodies
+
+9. Implement proper error handling and return meaningful error messages
+
+10. Use query parameters for filtering, sorting, and pagination
+
+## Running the API
+
+1. Install dependencies: `pip install -r requirements.txt`
+2. Set up your environment variables in a `.env` file
+3. Run the API: `uvicorn app.main:app --reload`
+
+The API will be available at `http://localhost:8000`. You can access the interactive API documentation at `http://localhost:8000/docs`.
