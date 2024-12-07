@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class CourseService {
 
@@ -16,8 +18,12 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public Page<Course> getAllCourses(Pageable pageable) {
-        return courseRepository.findAll(pageable);
+    public Page<Course> getAllCourses(Pageable pageable, Collection<String> schoolIds) {
+        if (schoolIds == null || schoolIds.isEmpty()) {
+            return courseRepository.findAll(pageable);
+        } else {
+            return courseRepository.findBySchoolIdIn(schoolIds, pageable);
+        }
     }
 
     public Course getCourseById(String id) {
